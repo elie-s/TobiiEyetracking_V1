@@ -8,15 +8,17 @@ namespace Elie.Tools.Eyetracking_1
     public class DataRecorder : MonoBehaviour
     {
         [SerializeField] private DataRecorderSettings settings = default;
+        [SerializeField] private SaveManager saveManager = default;
 
         private Buffer<Vector2> buffer;
         private List<FocusData> record;
         private IEnumerator recordRoutine;
+        private bool isPlaying = false;
 
         [ContextMenu("Play")]
         public void Play()
         {
-            if (recordRoutine != null) Stop();
+            if (isPlaying) Stop();
 
             recordRoutine = RecordRoutine();
 
@@ -26,13 +28,28 @@ namespace Elie.Tools.Eyetracking_1
         [ContextMenu("Stop")]
         public void Stop()
         {
+            isPlaying = false;
             StopCoroutine(recordRoutine);
+        }
+
+        [ContextMenu("Save")]
+        public void Save()
+        {
+            saveManager.SaveRecord(record.ToArray());
+            record.Clear();
+        }
+
+        private void ResetRecording()
+        {
+            if (isPlaying) Stop();
+            Save();
         }
 
         private IEnumerator RecordRoutine()
         {
             record = new List<FocusData>();
             buffer = new Buffer<Vector2>(settings.bufferSize);
+            isPlaying = true;
 
             while (!buffer.isFull)
             {

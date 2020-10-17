@@ -9,6 +9,6 @@ namespace Elie.Tools.Eyetracking_1
     {
         public string savePath = "Records";
         public string extension = "er";
-
+        public string version = "0.1";
     }
 }
