@@ -62,6 +62,8 @@ namespace Elie.Tools.Eyetracking_1
             {
                 buffer.Add(TobiiAPI.GetGazePoint().Screen);
                 record.Add(new FocusData(record.Count, buffer.values));
+
+                yield return null;
             }
         }
     }

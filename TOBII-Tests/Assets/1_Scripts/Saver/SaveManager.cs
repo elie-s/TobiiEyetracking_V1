@@ -9,6 +9,7 @@ namespace Elie.Tools.Eyetracking_1
     public class SaveManager : MonoBehaviour
     {
         [SerializeField] private SaveManagerSettings settings = default;
+        [SerializeField] private Gradient heatmapGradient = default;
 
         public void SaveRecord(FocusData[] _record)
         {
@@ -24,6 +25,7 @@ namespace Elie.Tools.Eyetracking_1
             fileContent += _record[_record.Length - 1].ToString();
 
             File.WriteAllText(path + "/" + fileName, fileContent);
+            HeatmapGenerator.Generate(_record,Camera.main.pixelWidth, Camera.main.pixelHeight, 1, heatmapGradient, path, fileName.Replace(settings.extension, ""));
 
             Debug.Log("Record saved at: " + path);
         }
@@ -35,7 +37,7 @@ namespace Elie.Tools.Eyetracking_1
             if (_path[1] != ':') result = Application.persistentDataPath + "/" + _path;
             if (!Directory.Exists(result)) Directory.CreateDirectory(result);
 
-            result += DateTime.Now.ToString("yyyy-MM-dd");
+            result += "_"+DateTime.Now.ToString("yyyy-MM-dd");
 
             if (!Directory.Exists(result)) Directory.CreateDirectory(result);
 

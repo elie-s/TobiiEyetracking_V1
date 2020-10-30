@@ -43,6 +43,13 @@ namespace Elie.Tools.Eyetracking_1
             return result / coordinates.Length;
         }
 
+        public Vector2Int AverageInt()
+        {
+            Vector2 average = Average();
+
+            return new Vector2Int(Mathf.FloorToInt(average.x), Mathf.FloorToInt(average.y));
+        }
+
         public override string ToString()
         {
             string coord = "";
